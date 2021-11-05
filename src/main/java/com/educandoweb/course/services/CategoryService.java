@@ -11,7 +11,7 @@ import com.educandoweb.course.repositories.CategoryRepository;
 
 @Service
 public class CategoryService {
-	
+
 	@Autowired
 	private CategoryRepository repository;
 	
@@ -22,7 +22,5 @@ public class CategoryService {
 	public Category findById(Long id) {
 		Optional<Category> obj = repository.findById(id);
 		return obj.get();
-		
 	}
-
 }

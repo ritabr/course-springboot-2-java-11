@@ -2,7 +2,6 @@ package com.educandoweb.course.entities;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -17,7 +16,6 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 @Entity
 @Table(name = "tb_product")
 public class Product implements Serializable {
@@ -30,15 +28,11 @@ public class Product implements Serializable {
 	private String description;
 	private Double price;
 	private String imgUrl;
-	
+
 	@ManyToMany
-	@JoinTable(
-			name = "tb_product_category", 
-			joinColumns = @JoinColumn(name = "product_ID"),
-			inverseJoinColumns = @JoinColumn(name = "category_id"))
-	
+	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
-	
+
 	@OneToMany(mappedBy = "id.product")
 	private Set<OrderItem> items = new HashSet<>();
 	
@@ -93,11 +87,11 @@ public class Product implements Serializable {
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
-	
+
 	public Set<Category> getCategories() {
 		return categories;
 	}
-	
+
 	@JsonIgnore
 	public Set<Order> getOrders() {
 		Set<Order> set = new HashSet<>();
@@ -106,10 +100,13 @@ public class Product implements Serializable {
 		}
 		return set;
 	}
-
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
 
 	@Override
@@ -121,8 +118,11 @@ public class Product implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Product other = (Product) obj;
-		return Objects.equals(id, other.id);
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
-
-
 }
